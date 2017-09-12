@@ -1,0 +1,2 @@
+# planningPoker
+Scrum planning tool
