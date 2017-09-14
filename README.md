@@ -9,7 +9,7 @@ We need a better planning tool and we have decided on [planning poker](https://e
 ## Business Requirements
 
 1. Multiple players must be able to join a game.
-2. The game can only begin once there are more than two players.
+2. The game can only begin once there are two or more players.
 3. A player must be able to join and leave at any time.
 4. You need to reveal all players choices only after all players have selected an estimate.
 
