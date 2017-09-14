@@ -2,9 +2,10 @@
 
 The goal of this coding challenge is to gauge how you attack certain problems. It is more important that you are able to defend your choices and even if you are unable to complete the challenge you should be able to speak to what problems you forsee and any strategy to overcome them.
 
-# Coding Chalange
+## Coding Challenge
 
 We need a better planning tool and we have decided on [planning poker](https://en.wikipedia.org/wiki/Planning_poker). Your objective is to build a web app that allows a single or multiple teams to plan using planning poker.
+
 ## Business Requirements
 
 1. Multiple players must be able to join a game.
