@@ -26,3 +26,5 @@ We need a better planning tool and we have decided on [planning poker](https://e
 2. Orchestrate your containers with [Docker Compose](https://docs.docker.com/compose/)
 
 ## Submitions
+In order to submit your solution please [fork](https://help.github.com/articles/fork-a-repo/) this project submit a [pull request](https://help.github.com/articles/creating-a-pull-request/).
+If you have any questions please create an [issue](https://guides.github.com/features/issues/).
