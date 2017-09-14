@@ -19,7 +19,7 @@ We need a better planning tool and we have decided on [planning poker](https://e
 3. Communication from client to server must be over [http(s)://](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol), [ws://](https://en.wikipedia.org/wiki/WebSocket) or any combination of the two.
     * You are free to use any architecture in your transport such as [SOAP](https://en.wikipedia.org/wiki/SOAP), [gRPC](https://grpc.io/), [REST](https://en.wikipedia.org/wiki/Representational_state_transfer), [GraphQL](https://facebook.github.io/react/blog/2015/05/01/graphql-introduction.html) or any other method you wish.
 4. If you choose to use a database (not required) it must run on linux.
-5. Please provide instructions on how to compile an run your project.
+5. Please provide instructions on how to compile and run your project.
 
 ## Extra Credit
 1. Containerize your solution with [Docker](https://www.docker.com/)
