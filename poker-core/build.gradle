@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'net.ltgt.apt' version '0.9'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+
+    compile project(':poker-common')
+    compile project(':poker-controller')
+    compile project(':poker-dao')
+
+    compileOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+
+    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.1.0.Final'
+    apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
+
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}

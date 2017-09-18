@@ -1,0 +1,7 @@
+rootProject.name = 'planning-poker'
+include 'poker-controller'
+include 'poker-core'
+include 'poker-dao'
+include 'poker-test'
+include 'poker-common'
+
