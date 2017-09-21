@@ -4,4 +4,5 @@ include 'poker-core'
 include 'poker-dao'
 include 'poker-test'
 include 'poker-common'
+include 'planning-poker-war'
 

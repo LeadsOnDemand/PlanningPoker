@@ -40,4 +40,29 @@ public class StoryPointEntity implements Serializable {
         this.symbol = symbol;
     }
 
+    @Override
+    public boolean equals(Object object) {
+
+        if (this == object) {
+            return true;
+        } else if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        StoryPointEntity that = (StoryPointEntity) object;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        } else if (value != null ? !value.equals(that.value) : that.value != null) {
+            return false;
+        }
+
+        return symbol != null ? symbol.equals(that.symbol) : that.symbol == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

@@ -3,12 +3,15 @@ package com.anigenero.sandbox.poker.core.socket;
 import javax.websocket.Session;
 import java.io.Serializable;
 
-public class WebSocketSession implements Serializable {
+public class PokerSession implements Serializable {
 
     private final Session session;
     private final String name;
 
-    public WebSocketSession(String name, Session session) {
+    private final boolean leader;
+
+    public PokerSession(String name, Session session, boolean leader) {
+        this.leader = leader;
         this.name = name;
         this.session = session;
     }
@@ -19,6 +22,10 @@ public class WebSocketSession implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isLeader() {
+        return leader;
     }
 
 }

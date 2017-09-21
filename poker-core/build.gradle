@@ -18,6 +18,8 @@ dependencies {
 
     compileOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
 
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: jjwtVersion
+
     compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.1.0.Final'
     apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 

@@ -32,6 +32,8 @@ dependencies {
 
     compile group: 'cglib', name: 'cglib', version: '3.2.5'
 
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: jjwtVersion
+
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jerseyExtVersion
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: jerseyExtVersion
     compile (group: 'org.glassfish.jersey.ext', name: 'jersey-bean-validation', version: jerseyExtVersion) {
@@ -55,6 +57,10 @@ dependencies {
 
     compile group: 'io.swagger', name: 'swagger-core', version: swaggerVersion
     compileClasspath group: 'io.swagger', name: 'swagger-hibernate-validations', version: swaggerVersion
+
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: springBootVersion) {
+        exclude module: 'spring-boot-starter-logging'
+    }
 
     testCompile project(':poker-test')
 

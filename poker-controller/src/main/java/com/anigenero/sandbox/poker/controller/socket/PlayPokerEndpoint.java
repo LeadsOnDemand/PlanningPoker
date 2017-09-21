@@ -1,16 +1,16 @@
 package com.anigenero.sandbox.poker.controller.socket;
 
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
+import com.anigenero.sandbox.poker.controller.socket.config.WebSocketConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.socket.server.standard.SpringConfigurator;
+import org.springframework.stereotype.Controller;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.ws.rs.QueryParam;
-import java.io.IOException;
 
-@ServerEndpoint(value = "/play", configurator = SpringConfigurator.class)
+@Controller
+@ServerEndpoint(value = "/play/{username}", configurator = WebSocketConfigurator.class, encoders = {WebSocketEncoder.class})
 public class PlayPokerEndpoint {
 
     private final PlayPokerHandler playPokerHandler;
@@ -20,19 +20,22 @@ public class PlayPokerEndpoint {
         this.playPokerHandler = playPokerHandler;
     }
 
-    @OnOpen
-    public void onOpen(@QueryParam("name") String name, Session session) throws IOException {
-        this.playPokerHandler.registerSession(name, session);
+    @OnMessage
+    public void onMessage(final Session session, String message) {
+
     }
 
-    @OnMessage
-    public void onMessage(Session session, String message) {
-
+    @OnOpen
+    public void onOpen(final Session session, @PathParam("username") final String username) {
+        this.playPokerHandler.registerSession(username, session);
     }
 
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
+    }
 
+    @OnError
+    public void onError(Session session, Throwable thr) {
     }
 
 }

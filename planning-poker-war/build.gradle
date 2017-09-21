@@ -1,0 +1,48 @@
+plugins {
+    id 'war'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+
+    compile project(':poker-core')
+
+    // logging
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: log4jVersion
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'com.lmax', name: 'disruptor', version: '3.3.6'
+
+    // logging for hibernate
+    compile group: 'org.jboss.logging', name: 'jboss-logging', version: '3.3.1.Final'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.10'
+
+    // need this for log4j2.yaml
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: jacksonVersion
+
+    // these have to be here because of a dependency issue that overrides the dependency versions
+    // not sure why it happens
+    compile group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
+    compile group: 'org.hibernate', name: 'hibernate-java8', version: hibernateVersion
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+
+    // for HTTP/2 requests
+    compile group: 'org.mortbay.jetty.alpn', name: 'alpn-boot', version: '8.1.11.v20170118'
+
+    // spring boot framework
+    compile group: 'org.springframework', name: 'spring-core', version: springVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: springBootVersion
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion) {
+        exclude module: 'spring-boot-starter-tomcat'
+        exclude module: 'spring-boot-starter-logging'
+        exclude group: 'org.hibernate'
+    }
+
+}

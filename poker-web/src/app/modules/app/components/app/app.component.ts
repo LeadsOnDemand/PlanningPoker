@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
-import {PlayService} from '../../services/play.service';
+import {Component, OnInit} from '@angular/core';
+import {PlayHandler} from '../../../../handler/play.handler';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor(private _playService: PlayService) { }
+  private _initialized: Boolean = false;
+  private _isSessionAvailable: Boolean = false;
 
-  private _join() {
-    this._playService.isSessionAvailable().then(result => {
-      alert(result);
+  constructor(private _playHandler: PlayHandler) { }
+
+  ngOnInit(): void {
+    this._playHandler.isSessionAvailable().then(result => {
+      this._initialized = true;
+      this._isSessionAvailable = result;
     });
   }
 

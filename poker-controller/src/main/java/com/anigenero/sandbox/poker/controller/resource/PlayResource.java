@@ -2,6 +2,7 @@ package com.anigenero.sandbox.poker.controller.resource;
 
 import com.anigenero.sandbox.poker.controller.bean.DefaultResponse;
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
+import com.anigenero.sandbox.poker.controller.resource.security.AllowAnonymous;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class PlayResource {
         this.playPokerHandler = playPokerHandler;
     }
 
+    @AllowAnonymous
     @Path("/available")
     @GET
     public DefaultResponse<Boolean> isSessionAvailable() {
