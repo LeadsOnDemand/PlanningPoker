@@ -24,7 +24,7 @@ export class PlayHandler {
   }
 
   public get showNewDealButton() {
-    return isArray(this._gameState.players) && this._gameState.players.length > 1 && this._gameState.newDealReady;
+    return this._gameState.newDealReady && this._isLeader;
   }
 
   public isPlaying() {
