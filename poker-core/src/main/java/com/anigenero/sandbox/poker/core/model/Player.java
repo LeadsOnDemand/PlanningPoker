@@ -57,19 +57,19 @@ public class Player implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Player player = (Player) o;
 
-        if (sessionId != null ? !sessionId.equals(player.sessionId) : player.sessionId != null) return false;
-        if (currentCard != null ? !currentCard.equals(player.currentCard) : player.currentCard != null) return false;
         return username != null ? username.equals(player.username) : player.username == null;
+
     }
 
     @Override
     public int hashCode() {
-        return sessionId.hashCode();
+        return username.hashCode();
     }
 
 }

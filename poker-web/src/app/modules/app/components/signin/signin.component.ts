@@ -31,6 +31,7 @@ export class SigninComponent {
    */
   _onJoin() {
     this._playHandler.startGame(this._name);
+    return false;
   }
 
 }

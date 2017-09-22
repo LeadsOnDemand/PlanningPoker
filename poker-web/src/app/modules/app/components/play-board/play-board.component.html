@@ -1,10 +1,14 @@
 <div class="player-container">
   <div *ngFor="let player of _playHandler.state.players">
-    <div *ngIf="!_playHandler.isCurrentPlayer(player.username)">
-      <app-avatar></app-avatar>
-      {{player.username}}
-      <app-poker-card *ngIf="player.currentCard" [card]="player.currentCard"></app-poker-card>
-    </div>
+      <div class="header">
+        <div>
+          <app-avatar></app-avatar>
+        </div>
+        <div>
+          {{player.username}}
+        </div>
+      </div>
+      <app-poker-card *ngIf="player.currentCard" [card]="player.currentCard" [flipped]="!_playHandler.state.showCards"></app-poker-card>
   </div>
 </div>
 <div class="card-container">
@@ -14,7 +18,7 @@
 </div>
 
 <div *ngIf="_playHandler.showNewDealButton">
-  <button type="submit" md-raised-button i18n>
+  <button type="submit" md-raised-button i18n (click)="_playHandler.newDeal()">
     New Deal
   </button>
 </div>

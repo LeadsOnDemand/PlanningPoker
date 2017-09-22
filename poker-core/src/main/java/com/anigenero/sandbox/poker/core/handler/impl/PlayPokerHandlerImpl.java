@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,7 +43,7 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     @Autowired
     public PlayPokerHandlerImpl(AuthenticationHandlerImpl authenticationHandler) {
         this.authenticationHandler = authenticationHandler;
-        this.sessionMap = new ConcurrentHashMap<>();
+        this.sessionMap = Collections.synchronizedMap(new HashMap<>());
         this.gameState = new GameState();
     }
 
@@ -226,15 +228,18 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
      * Terminates play for the all the players
      */
     private void terminatePlay() {
+
         this.sessionMap.forEach((id, session) -> {
             try {
                 session.getSession().close();
             } catch (IOException e) {
                 log.error("Could not close session '{}' because of an error", id, e);
-            } finally {
-                this.sessionMap.remove(id);
             }
         });
+
+        this.sessionMap.clear();
+        this.gameState = new GameState();
+
     }
 
     private void sendStateEvent(final PlayEvent event) {

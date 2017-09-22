@@ -18,7 +18,25 @@
     background: rgba(0, 0, 0, .5);
 
     & > div {
+      width: 33%;
       display: table-cell;
+    }
+
+    .header {
+
+      width: 100%;
+      display: table;
+
+      color: #fff;
+
+      & > div {
+        &:first-child {
+          width: 80px;
+        }
+        display: table-cell;
+        vertical-align: middle;
+      }
+
     }
 
   }
@@ -29,6 +47,13 @@
     display: table;
 
     flex: 0;
+
+    app-poker-card {
+      cursor: pointer;
+    }
+    app-poker-card.selected {
+      border: 2px solid rebeccapurple;
+    }
 
     & > div {
       display: table-cell;

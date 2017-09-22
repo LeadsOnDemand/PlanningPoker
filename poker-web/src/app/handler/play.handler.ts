@@ -7,6 +7,7 @@ import {TokenUtil} from '../util/token.util';
 import {Router} from '@angular/router';
 import {PokerCardDTO} from '../model/poker.card.dto';
 import {GameState} from '../model/game.state';
+import {Player} from "../model/player";
 
 @Injectable()
 export class PlayHandler {
@@ -17,7 +18,8 @@ export class PlayHandler {
   private _webSocket: WebSocket = null;
   private _isLeader = false;
 
-  constructor(private _playService: PlayService, private _router: Router) { }
+  constructor(private _playService: PlayService, private _router: Router) {
+  }
 
   public get state(): GameState {
     return this._gameState;
@@ -44,6 +46,10 @@ export class PlayHandler {
   }
 
   public startGame(name: string) {
+
+    if (this._webSocket !== null && [WebSocket.CLOSED, WebSocket.CLOSING].indexOf(this._webSocket.readyState) === -1) {
+      return;
+    }
 
     this._currentPlayer = name;
 
@@ -86,14 +92,31 @@ export class PlayHandler {
 
   }
 
+  public get otherPlayers() {
+
+    let result: Player[] = [];
+
+    if (!isArray(this._gameState.players)) {
+      return result;
+    }
+
+    const count = this._gameState.players.length;
+    for (let i = 0; i < count; i++) {
+      if (this._currentPlayer !== this._gameState.players[i].username) {
+        result.push(this._gameState.players[i]);
+      }
+    }
+
+    return result;
+
+  }
+
   public submitEstimate(pokerCard: PokerCardDTO) {
     this._playService.submitEstimate(pokerCard);
   }
 
   public newDeal() {
-    if (this._gameState.showCards) {
-      this._playService.newDeal();
-    }
+    this._playService.newDeal();
   }
 
   private _handleMessage(playEvent: any) {
@@ -106,10 +129,6 @@ export class PlayHandler {
       this._gameState = playEvent.state;
     }
 
-  }
-
-  public isCurrentPlayer(user: string): boolean {
-    return user === this._currentPlayer;
   }
 
 }
