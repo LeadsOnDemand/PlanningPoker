@@ -1,27 +1,26 @@
 package com.anigenero.sandbox.poker.core.event;
 
 import com.anigenero.sandbox.poker.core.constant.PlayEvent;
+import com.anigenero.sandbox.poker.core.model.GameState;
 
 import java.io.Serializable;
 
-public abstract class PokerEvent<T extends Serializable> implements Serializable {
+public class PokerEvent implements Serializable {
 
-    private final String user;
-    private final T data;
+    private final GameState state;
+    private final PlayEvent event;
 
-    public PokerEvent(String user, T data) {
-        this.data = data;
-        this.user = user;
+    public PokerEvent(GameState state, PlayEvent event) {
+        this.state = state;
+        this.event = event;
     }
 
-    public abstract PlayEvent getEvent();
-
-    public final String getUser() {
-        return user;
+    public GameState getState() {
+        return state;
     }
 
-    public final T getData() {
-        return data;
+    public PlayEvent getEvent() {
+        return event;
     }
 
 }

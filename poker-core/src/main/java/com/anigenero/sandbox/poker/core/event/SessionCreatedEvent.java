@@ -4,13 +4,18 @@ import com.anigenero.sandbox.poker.core.constant.PlayEvent;
 
 import java.io.Serializable;
 
-public class SessionCreatedEvent extends PokerEvent<SessionCreatedEvent.SessionInfo> {
+public class SessionCreatedEvent implements Serializable {
 
-    public SessionCreatedEvent(String user, SessionInfo token) {
-        super(user, token);
+    private final SessionInfo data;
+
+    public SessionCreatedEvent(SessionInfo data) {
+        this.data = data;
     }
 
-    @Override
+    public SessionInfo getData() {
+        return data;
+    }
+
     public PlayEvent getEvent() {
         return PlayEvent.SESSION_STARTED;
     }

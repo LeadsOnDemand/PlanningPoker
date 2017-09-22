@@ -4,11 +4,22 @@ import java.io.Serializable;
 
 public class UserSession implements Serializable {
 
-    private final String sessionId;
-    private final String username;
+    private String sessionId;
+    private String username;
+
+    public UserSession() {
+    }
 
     public UserSession(String sessionId, String username) {
         this.sessionId = sessionId;
+        this.username = username;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
     }
 

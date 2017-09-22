@@ -127,6 +127,8 @@ public class ErrorCode implements Serializable {
 
         public static final ErrorCode UNKNOWN = new ErrorCode("unknown");
 
+        public static final ErrorCode USER_SESSION_MISSING = new ErrorCode("session_missing");
+
         private Codes() { }
 
     }

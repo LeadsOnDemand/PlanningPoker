@@ -1,10 +1,10 @@
-import {PokerCardDTO} from "./poker.card.dto";
+import {PokerCardDTO} from './poker.card.dto';
 
 export class Player {
 
-  name: string;
-  isCurrent: boolean;
-
+  username: string;
   currentCard: PokerCardDTO;
+
+  leader: boolean;
 
 }

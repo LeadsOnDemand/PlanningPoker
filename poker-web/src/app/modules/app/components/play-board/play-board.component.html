@@ -1,8 +1,8 @@
 <div class="player-container">
-  <div *ngFor="let player of _playHandler.players">
-    <div *ngIf="!player.isCurrent">
+  <div *ngFor="let player of _playHandler.state.players">
+    <div *ngIf="!_playHandler.isCurrentPlayer(player.username)">
       <app-avatar></app-avatar>
-      {{player.name}}
+      {{player.username}}
       <app-poker-card *ngIf="player.currentCard" [card]="player.currentCard"></app-poker-card>
     </div>
   </div>

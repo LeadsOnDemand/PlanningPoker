@@ -1,9 +1,14 @@
 package com.anigenero.sandbox.poker.core.handler.impl;
 
+import com.anigenero.sandbox.poker.common.exception.ErrorCode;
+import com.anigenero.sandbox.poker.common.exception.ServerException;
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
 import com.anigenero.sandbox.poker.controller.model.PokerCardDTO;
-import com.anigenero.sandbox.poker.core.event.*;
-import com.anigenero.sandbox.poker.core.model.PokerTask;
+import com.anigenero.sandbox.poker.core.constant.PlayEvent;
+import com.anigenero.sandbox.poker.core.event.PokerEvent;
+import com.anigenero.sandbox.poker.core.event.SessionCreatedEvent;
+import com.anigenero.sandbox.poker.core.model.GameState;
+import com.anigenero.sandbox.poker.core.model.Player;
 import com.anigenero.sandbox.poker.core.model.UserSession;
 import com.anigenero.sandbox.poker.core.socket.PokerSession;
 import org.apache.logging.log4j.LogManager;
@@ -31,12 +36,13 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     private final AuthenticationHandlerImpl authenticationHandler;
     private final Map<String, PokerSession> sessionMap;
 
-    private PokerTask pokerTask;
+    private GameState gameState;
 
     @Autowired
     public PlayPokerHandlerImpl(AuthenticationHandlerImpl authenticationHandler) {
         this.authenticationHandler = authenticationHandler;
         this.sessionMap = new ConcurrentHashMap<>();
+        this.gameState = new GameState();
     }
 
     @Override
@@ -74,9 +80,12 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
                     sessionInfo.setLeader(isGameLeader);
                     sessionInfo.setToken(token);
 
-                    session.getBasicRemote().sendObject(new SessionCreatedEvent(name, sessionInfo));
+                    session.getBasicRemote().sendObject(new SessionCreatedEvent(sessionInfo));
 
-                    this.sendEvent(new PlayerJoinedEvent(name));
+                    this.gameState.getPlayers().add(new Player(name, session.getId(), sessionInfo.isLeader()));
+                    this.gameState.setNewDealReady(this.gameState.getPlayers().size() > 1);
+
+                    this.sendStateEvent(PlayEvent.PLAYER_JOINED);
 
                 } catch (Exception e) {
                     log.error("Could not send connection response because of an error", e);
@@ -99,10 +108,15 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
             return;
         }
 
-        this.pokerTask = new PokerTask();
-        this.pokerTask.setName(taskName);
+        for (Player player : this.gameState.getPlayers()) {
+            player.setCurrentCard(null);
+        }
 
-        this.sendEvent(new NewDealEvent(userSession.getUsername(), taskName));
+        this.gameState.setTaskName(taskName);
+        this.gameState.setShowCards(false);
+        this.gameState.setNewDealReady(false);
+
+        this.sendStateEvent(PlayEvent.GAME_STARTED);
 
     }
 
@@ -121,17 +135,55 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
 
         final UserSession userSession = this.authenticationHandler.getUserSession(request);
 
-        if (this.pokerTask == null || this.pokerTask.getEstimates().containsKey(userSession.getSessionId())) {
+        if (this.gameState.getTaskName() == null || this.hasEstimate(userSession)) {
             return;
         }
 
-        this.pokerTask.getEstimates().put(userSession.getSessionId(), pokerCardDTO);
+        this.getPlayer(userSession).setCurrentCard(pokerCardDTO);
 
-        sendEvent(new SubmitEstimateEvent(userSession.getUsername(), this.pokerTask.getEstimates()));
-
-        if (this.pokerTask.getEstimates().size() == this.sessionMap.size()) {
-            this.sendEvent(new RevealCardsEvent(userSession.getUsername()));
+        if (this.isAllPlayersSubmitted()) {
+            this.gameState.setShowCards(true);
+            this.gameState.setNewDealReady(true);
+            this.sendStateEvent(PlayEvent.SHOW_CARDS);
+        } else {
+            this.sendStateEvent(PlayEvent.ESTIMATE_SUBMITTED);
         }
+
+    }
+
+    private boolean isAllPlayersSubmitted() {
+
+        for (Player player : this.gameState.getPlayers()) {
+            if (player.getCurrentCard() == null) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    private Player getPlayer(UserSession userSession) {
+
+        for (Player player : this.gameState.getPlayers()) {
+            if (player.getSessionId().equals(userSession.getSessionId())) {
+                return player;
+            }
+        }
+
+        throw new ServerException(ErrorCode.Codes.USER_SESSION_MISSING);
+
+    }
+
+    private boolean hasEstimate(UserSession userSession) {
+
+        for (Player player : this.gameState.getPlayers()) {
+            if (player.getSessionId().equals(userSession.getSessionId())) {
+                return player.getCurrentCard() != null;
+            }
+        }
+
+        return false;
 
     }
 
@@ -145,8 +197,20 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
 
             final String id = session.getId();
 
-            this.sendEvent(new PlayerQuitEvent(pokerSession.getName()));
+            for (Player player : this.gameState.getPlayers()) {
+                if (player.getSessionId().equals(session.getId())) {
+                    this.gameState.getPlayers().remove(player);
+                    break;
+                }
+            }
+
+            this.sendStateEvent(PlayEvent.PLAYER_QUIT);
             this.sessionMap.remove(id);
+
+            if (this.isAllPlayersSubmitted()) {
+                this.gameState.setShowCards(true);
+                this.sendStateEvent(PlayEvent.SHOW_CARDS);
+            }
 
             try {
                 session.close();
@@ -173,11 +237,11 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
         });
     }
 
-    private void sendEvent(final PokerEvent event) {
+    private void sendStateEvent(final PlayEvent event) {
         this.sessionMap.forEach((id, session) -> {
             try {
                 if (session.getSession().isOpen()) {
-                    session.getSession().getBasicRemote().sendObject(event);
+                    session.getSession().getBasicRemote().sendObject(new PokerEvent(gameState, event));
                 }
             } catch (IOException | EncodeException e) {
                 log.error("An error occurred sending event to remote session '{}'", id, e);
