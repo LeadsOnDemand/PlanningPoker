@@ -1,0 +1,64 @@
+:host {
+
+  width: 100%;
+
+  flex: 1;
+
+  background: url('../../../../../assets/images/poker-table-bg.jpg') no-repeat;
+  background-size: 100% auto;
+
+  .player-container {
+
+    width: 100%;
+    min-height: 300px;
+    display: table;
+
+    flex: 1;
+
+    background: rgba(0, 0, 0, .5);
+
+    & > div {
+      width: 33%;
+      display: table-cell;
+    }
+
+    .header {
+
+      width: 100%;
+      display: table;
+
+      color: #fff;
+
+      & > div {
+        &:first-child {
+          width: 80px;
+        }
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+    }
+
+  }
+
+  .card-container {
+
+    width: 100%;
+    display: table;
+
+    flex: 0;
+
+    app-poker-card {
+      cursor: pointer;
+    }
+    app-poker-card.selected {
+      border: 2px solid rebeccapurple;
+    }
+
+    & > div {
+      display: table-cell;
+    }
+
+  }
+
+}

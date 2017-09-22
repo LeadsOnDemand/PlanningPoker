@@ -1,0 +1,35 @@
+@import 'reset';
+@import 'poker-theme';
+@import url('https://fonts.googleapis.com/css?family=Roboto|Material+Icons');
+
+html, body {
+
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  font-family: 'Roboto', Arial;
+  -webkit-font-smoothing: antialiased;
+
+  margin: 0;
+  padding: 0;
+
+  background: #ecf0f1;
+
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+a {
+  &:link, &:visited, &:active {
+    text-decoration: none;
+    color: #fff;
+  }
+}

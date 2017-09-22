@@ -1,0 +1,21 @@
+<md-card>
+  <md-card-content>
+
+    <form (keydown)="_onKeyDown($event)" (submit)="_onJoin()">
+      <div>
+        <app-avatar></app-avatar>
+      </div>
+      <div>
+        <md-input-container>
+          <input mdInput name="name" type="text" [(ngModel)]="_name" placeholder="Name" required/>
+        </md-input-container>
+      </div>
+      <div>
+        <button type="submit" md-raised-button i18n>
+          Join
+        </button>
+      </div>
+    </form>
+
+  </md-card-content>
+</md-card>
