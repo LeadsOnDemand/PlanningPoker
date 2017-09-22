@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ConfigurationService} from '../../services/config.service';
+import {PokerCardDTO} from '../../../../model/poker.card.dto';
 
 @Component({
   selector: 'app-play-board',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayBoardComponent implements OnInit {
 
-  constructor() { }
+  private _cardDeck: PokerCardDTO[];
+
+  constructor(private _configurationService: ConfigurationService) { }
 
   ngOnInit() {
+    this._configurationService.getConfiguration().then(config => {
+      this._cardDeck = config.cardDeck;
+    });
   }
 
 }

@@ -1,5 +1,6 @@
 package com.anigenero.sandbox.poker.controller.resource.filter;
 
+import com.anigenero.sandbox.poker.common.constants.HeaderConstants;
 import com.anigenero.sandbox.poker.controller.handler.AuthenticationHandler;
 import com.anigenero.sandbox.poker.controller.resource.security.AllowAnonymous;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import java.io.IOException;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
-
-    private static final String AUTH_HEADER = "auth";
 
     private final AuthenticationHandler authenticationHandler;
 
@@ -42,9 +41,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
 
         // Get the HTTP Authorization header from the request
-        String authorizationHeader = requestContext.getHeaderString(AUTH_HEADER);
+        String authorizationHeader = requestContext.getHeaderString(HeaderConstants.AUTH_HEADER);
 
-        final String token = authorizationHeader.substring("Bearer".length()).trim();
+        final String token = authorizationHeader.trim();
         if (!this.authenticationHandler.isSessionValid(token)) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }

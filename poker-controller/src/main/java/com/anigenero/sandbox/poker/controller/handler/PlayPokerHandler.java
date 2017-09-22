@@ -2,6 +2,7 @@ package com.anigenero.sandbox.poker.controller.handler;
 
 import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.Session;
 
 public interface PlayPokerHandler {
@@ -24,18 +25,18 @@ public interface PlayPokerHandler {
     /**
      * Sets the name of the current task that needs estimates
      *
-     * @param name    {@link String}
-     * @param session {@link Session}
+     * @param taskName {@link String}
+     * @param request  {@link HttpServletRequest}
      */
-    void setCurrentTask(String name, Session session);
+    void startNewRound(String taskName, HttpServletRequest request);
 
     /**
      * Submit the estimate for the specified story
      *
      * @param pokerEstimateDTO {@link PokerEstimateDTO}
-     * @param session          {@link Session}
+     * @param request          {@link Session}
      */
-    void submitEstimate(PokerEstimateDTO pokerEstimateDTO, Session session);
+    void submitEstimate(PokerEstimateDTO pokerEstimateDTO, HttpServletRequest request);
 
     /**
      * Terminates the current session

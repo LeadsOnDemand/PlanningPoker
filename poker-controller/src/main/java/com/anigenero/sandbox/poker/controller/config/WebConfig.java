@@ -18,7 +18,6 @@ import org.springframework.web.socket.server.standard.ServerEndpointRegistration
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-@ConditionalOnWebApplication
 @Configuration
 @EnableWebSocket
 public class WebConfig {

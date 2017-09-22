@@ -2,9 +2,9 @@ package com.anigenero.sandbox.poker.core.handler.impl;
 
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
 import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
-import com.anigenero.sandbox.poker.core.event.PokerEvent;
-import com.anigenero.sandbox.poker.core.event.SessionCreatedEvent;
+import com.anigenero.sandbox.poker.core.event.*;
 import com.anigenero.sandbox.poker.core.model.PokerTask;
+import com.anigenero.sandbox.poker.core.model.UserSession;
 import com.anigenero.sandbox.poker.core.socket.PokerSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
@@ -68,7 +69,12 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
                 try {
 
                     final String token = this.authenticationHandler.issueToken(session.getId(), name);
-                    session.getBasicRemote().sendObject(new SessionCreatedEvent(name, token));
+
+                    SessionCreatedEvent.SessionInfo sessionInfo = new SessionCreatedEvent.SessionInfo();
+                    sessionInfo.setLeader(isGameLeader);
+                    sessionInfo.setToken(token);
+
+                    session.getBasicRemote().sendObject(new SessionCreatedEvent(name, sessionInfo));
 
                 } catch (Exception e) {
                     log.error("Could not send connection response because of an error", e);
@@ -81,15 +87,20 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     }
 
     @Override
-    public void setCurrentTask(String name, final Session session) {
+    public void startNewRound(String taskName, HttpServletRequest request) {
+
+        final UserSession userSession = this.authenticationHandler.getUserSession(request);
 
         // if this is not the session leader, we don't want to set anything
+        final Session session = this.sessionMap.get(userSession.getSessionId()).getSession();
         if (!this.isGameLeader(session)) {
             return;
         }
 
         this.pokerTask = new PokerTask();
-        this.pokerTask.setName(name);
+        this.pokerTask.setName(taskName);
+
+        this.sendEvent(new NewDealEvent(userSession.getUsername(), taskName));
 
     }
 
@@ -104,13 +115,21 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     }
 
     @Override
-    public void submitEstimate(PokerEstimateDTO pokerEstimateDTO, Session session) {
+    public void submitEstimate(PokerEstimateDTO pokerEstimateDTO, HttpServletRequest request) {
 
-        if (this.pokerTask == null || this.pokerTask.getEstimates().containsKey(session.getId())) {
+        final UserSession userSession = this.authenticationHandler.getUserSession(request);
+
+        if (this.pokerTask == null || this.pokerTask.getEstimates().containsKey(userSession.getSessionId())) {
             return;
         }
 
-        this.pokerTask.getEstimates().put(session.getId(), pokerEstimateDTO);
+        this.pokerTask.getEstimates().put(userSession.getSessionId(), pokerEstimateDTO);
+
+        sendEvent(new SubmitEstimateEvent(userSession.getUsername(), pokerEstimateDTO));
+
+        if (this.pokerTask.getEstimates().size() == this.sessionMap.size()) {
+            this.sendEvent(new RevealCardsEvent(userSession.getUsername()));
+        }
 
     }
 

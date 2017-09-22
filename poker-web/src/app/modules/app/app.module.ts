@@ -18,6 +18,7 @@ import {PlayBoardComponent} from './components/play-board/play-board.component';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app.routing.module';
 import {AuthenticationProvider} from './providers/authentication.provider';
+import {ConfigurationService} from "./services/config.service";
 
 @NgModule({
   declarations: [
@@ -41,10 +42,11 @@ import {AuthenticationProvider} from './providers/authentication.provider';
     MdInputModule
   ],
   providers: [
+    AuthenticationProvider,
+    ConfigurationService,
     MdIconRegistry,
     PlayService,
-    PlayHandler,
-    AuthenticationProvider
+    PlayHandler
   ],
   bootstrap: [AppComponent]
 })

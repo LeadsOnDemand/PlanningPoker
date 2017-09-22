@@ -31,7 +31,8 @@ public class PlayPokerEndpoint {
     }
 
     @OnClose
-    public void onClose(Session session, CloseReason closeReason) {
+    public void onClose(final Session session) {
+        this.playPokerHandler.terminateSession(session);
     }
 
     @OnError

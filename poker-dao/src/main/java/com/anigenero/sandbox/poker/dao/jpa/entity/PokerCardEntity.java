@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "story_point")
-public class StoryPointEntity implements Serializable {
+@Table(name = "poker_card")
+public class PokerCardEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     @Column(nullable = false, updatable = false)
-    private Integer value;
+    private Double value;
     @Column(updatable = false)
     private String symbol;
 
@@ -24,11 +24,11 @@ public class StoryPointEntity implements Serializable {
         this.id = id;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
@@ -49,7 +49,7 @@ public class StoryPointEntity implements Serializable {
             return false;
         }
 
-        StoryPointEntity that = (StoryPointEntity) object;
+        PokerCardEntity that = (PokerCardEntity) object;
 
         if (id != null ? !id.equals(that.id) : that.id != null) {
             return false;

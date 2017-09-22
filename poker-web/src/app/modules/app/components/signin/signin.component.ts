@@ -30,9 +30,7 @@ export class SigninComponent {
    * @private
    */
   _onJoin() {
-    this._playHandler.startGame(this._name).then(() => {
-      this._router.navigate(['/']);
-    });
+    this._playHandler.startGame(this._name);
   }
 
 }
