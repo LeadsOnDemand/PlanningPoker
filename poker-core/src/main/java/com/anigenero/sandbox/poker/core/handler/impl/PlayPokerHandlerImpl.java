@@ -1,7 +1,7 @@
 package com.anigenero.sandbox.poker.core.handler.impl;
 
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
-import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
+import com.anigenero.sandbox.poker.controller.model.PokerCardDTO;
 import com.anigenero.sandbox.poker.core.event.*;
 import com.anigenero.sandbox.poker.core.model.PokerTask;
 import com.anigenero.sandbox.poker.core.model.UserSession;
@@ -76,6 +76,8 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
 
                     session.getBasicRemote().sendObject(new SessionCreatedEvent(name, sessionInfo));
 
+                    this.sendEvent(new PlayerJoinedEvent(name));
+
                 } catch (Exception e) {
                     log.error("Could not send connection response because of an error", e);
                 }
@@ -115,7 +117,7 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     }
 
     @Override
-    public void submitEstimate(PokerEstimateDTO pokerEstimateDTO, HttpServletRequest request) {
+    public void submitEstimate(PokerCardDTO pokerCardDTO, HttpServletRequest request) {
 
         final UserSession userSession = this.authenticationHandler.getUserSession(request);
 
@@ -123,9 +125,9 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
             return;
         }
 
-        this.pokerTask.getEstimates().put(userSession.getSessionId(), pokerEstimateDTO);
+        this.pokerTask.getEstimates().put(userSession.getSessionId(), pokerCardDTO);
 
-        sendEvent(new SubmitEstimateEvent(userSession.getUsername(), pokerEstimateDTO));
+        sendEvent(new SubmitEstimateEvent(userSession.getUsername(), this.pokerTask.getEstimates()));
 
         if (this.pokerTask.getEstimates().size() == this.sessionMap.size()) {
             this.sendEvent(new RevealCardsEvent(userSession.getUsername()));
@@ -142,6 +144,8 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
         } else {
 
             final String id = session.getId();
+
+            this.sendEvent(new PlayerQuitEvent(pokerSession.getName()));
             this.sessionMap.remove(id);
 
             try {
@@ -172,7 +176,9 @@ public class PlayPokerHandlerImpl implements PlayPokerHandler {
     private void sendEvent(final PokerEvent event) {
         this.sessionMap.forEach((id, session) -> {
             try {
-                session.getSession().getBasicRemote().sendObject(event);
+                if (session.getSession().isOpen()) {
+                    session.getSession().getBasicRemote().sendObject(event);
+                }
             } catch (IOException | EncodeException e) {
                 log.error("An error occurred sending event to remote session '{}'", id, e);
             }

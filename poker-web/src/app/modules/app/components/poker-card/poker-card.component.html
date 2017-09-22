@@ -1,6 +1,14 @@
+<div *ngIf="!flipped">
 <div>
+  <a>{{card.symbol || card.value}}</a>
+  <a></a>
 </div>
 <div>
+  {{card.symbol || card.value}}
 </div>
 <div>
+  <a></a>
+  <a>{{card.symbol || card.value}}</a>
 </div>
+</div>
+<div *ngIf="flipped" class="flipped"></div>

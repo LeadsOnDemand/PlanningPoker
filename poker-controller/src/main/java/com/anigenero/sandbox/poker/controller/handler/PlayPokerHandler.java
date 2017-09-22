@@ -1,5 +1,6 @@
 package com.anigenero.sandbox.poker.controller.handler;
 
+import com.anigenero.sandbox.poker.controller.model.PokerCardDTO;
 import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +34,10 @@ public interface PlayPokerHandler {
     /**
      * Submit the estimate for the specified story
      *
-     * @param pokerEstimateDTO {@link PokerEstimateDTO}
+     * @param pokerCardDTO {@link PokerCardDTO}
      * @param request          {@link Session}
      */
-    void submitEstimate(PokerEstimateDTO pokerEstimateDTO, HttpServletRequest request);
+    void submitEstimate(PokerCardDTO pokerCardDTO, HttpServletRequest request);
 
     /**
      * Terminates the current session

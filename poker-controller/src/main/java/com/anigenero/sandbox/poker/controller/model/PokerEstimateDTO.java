@@ -4,22 +4,13 @@ import java.io.Serializable;
 
 public class PokerEstimateDTO implements Serializable {
 
-    private Integer value;
-    private Short storyId;
+    private PokerCardDTO value;
 
-    public Short getStoryId() {
-        return storyId;
-    }
-
-    public void setStoryId(Short storyId) {
-        this.storyId = storyId;
-    }
-
-    public Integer getValue() {
+    public PokerCardDTO getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(PokerCardDTO value) {
         this.value = value;
     }
 

@@ -10,9 +10,9 @@ import {Router} from '@angular/router';
 })
 export class SigninComponent {
 
-  private _name: String = '';
+  private _name = '';
 
-  constructor(private _router: Router, private _playHandler: PlayHandler) { }
+  constructor(private _playHandler: PlayHandler) { }
 
   /**
    * Handles the key down event for ENTER key

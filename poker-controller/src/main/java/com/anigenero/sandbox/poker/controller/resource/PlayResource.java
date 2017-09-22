@@ -2,6 +2,7 @@ package com.anigenero.sandbox.poker.controller.resource;
 
 import com.anigenero.sandbox.poker.controller.bean.DefaultResponse;
 import com.anigenero.sandbox.poker.controller.handler.PlayPokerHandler;
+import com.anigenero.sandbox.poker.controller.model.PokerCardDTO;
 import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
 import com.anigenero.sandbox.poker.controller.resource.security.AllowAnonymous;
 import org.apache.logging.log4j.LogManager;
@@ -46,8 +47,8 @@ public class PlayResource {
     }
 
     @Path("/submit")
-    @GET
-    public DefaultResponse<Boolean> submitEstimate(PokerEstimateDTO estimate, @Context HttpServletRequest servletRequest) {
+    @POST
+    public DefaultResponse<Boolean> submitEstimate(PokerCardDTO estimate, @Context HttpServletRequest servletRequest) {
         this.playPokerHandler.submitEstimate(estimate, servletRequest);
         return new DefaultResponse<>(true);
     }

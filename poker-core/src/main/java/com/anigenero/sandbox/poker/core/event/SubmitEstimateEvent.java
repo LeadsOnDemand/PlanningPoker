@@ -1,11 +1,15 @@
 package com.anigenero.sandbox.poker.core.event;
 
+import com.anigenero.sandbox.poker.controller.model.PokerCardDTO;
 import com.anigenero.sandbox.poker.controller.model.PokerEstimateDTO;
 import com.anigenero.sandbox.poker.core.constant.PlayEvent;
 
-public class SubmitEstimateEvent extends PokerEvent<PokerEstimateDTO> {
+import java.util.HashMap;
+import java.util.Map;
 
-    public SubmitEstimateEvent(String user, PokerEstimateDTO data) {
+public class SubmitEstimateEvent extends PokerEvent<HashMap<String, PokerCardDTO>> {
+
+    public SubmitEstimateEvent(String user, HashMap<String, PokerCardDTO> data) {
         super(user, data);
     }
 
