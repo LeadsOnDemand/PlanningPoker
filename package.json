@@ -1,0 +1,18 @@
+{
+  "name": "pokerplanner",
+  "version": "1.0.0",
+  "description": "Poker Planner App",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongoose": "^4.11.11"
+  },
+  "devDependencies": {
+    "@angular/cli": "^1.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bhargav79",
+  "license": "ISC"
+}

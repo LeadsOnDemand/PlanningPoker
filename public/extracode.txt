@@ -1,0 +1,35 @@
+app.get('/master/sample', function(req,res)
+    {
+        var sample = [{
+            name:"test game 1",
+            gameid:1234,
+            players:[ 
+                {
+                name:"Bunty",
+                selectednum:3
+            },
+                {
+                    name:"Bunty1",
+                    selectednum:2
+            }
+        ]          
+        },
+        {
+            name:"test game 2",
+            gameid:1234,
+            players:[ 
+                {
+                name:"Bunty2",
+                selectednum:4
+            },
+                {
+                    name:"Bunty3",
+                    selectednum:6
+            }
+        ]  
+            }]
+         db.create(sample, function(err,result)
+        {
+            res.send(result);
+        }); 
+    });

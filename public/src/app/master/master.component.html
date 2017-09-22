@@ -1,0 +1,39 @@
+<div>
+   <h1>Go To Active Games Tab to Start The Game After Creating It</h1>
+<div class="container-fluid"style="width:50%;">
+        <form>
+          <div class="panel-body" >
+          <div class="form-group" >
+          <div class="panel panel-success">
+          <div class="panel-heading">Create A Game</div>
+          <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-primary"><label>Game Name:</label>{{name}}
+                <input class="form-control input-sm" [(ngModel)]="name" name="name" placeholder="Enter Game Name" required>
+                </li>
+                <li class="list-group-item list-group-item-primary"><label>Game ID:</label> 
+                  Will be randomly generated
+                </li>
+                <li class="list-group-item list-group-item-primary">
+                  <label>Default Series is Fibonacci Sequence</label> 
+                  <div class="card" style="width: 24rem;">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="list-group-item list-group-item-success">
+                 
+                    <button type="button" class="btn btn-success" (click)="create($event)">Create</button>
+              </li>
+            </ul>
+          </div>
+          </div>
+          </div>
+          </div>
+          </form>
+    </div>
+
+
+
+</div>

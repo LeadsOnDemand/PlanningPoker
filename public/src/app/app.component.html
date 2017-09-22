@@ -1,0 +1,33 @@
+<div>
+    <div style="position:relative;width:100%;">
+        <!-- Navbar -->
+   <nav class="navbar navbar-inverse">
+       <div class="container">
+         <div class="navbar-header">
+           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>                        
+           </button>
+           <div class="image">
+           <a routerLink="master" class="navbar-brand navbar-left" style="padding-top:.5vw;">
+               <button type="button" class="btn btn-primary" name="home" value="home">Poker Planner Home</button></a>
+           </div>
+         </div>
+         <div class="collapse navbar-collapse" id="myNavbar">
+           <ul class="nav navbar-nav navbar-right">
+             <li><a routerLinkActive="active"routerLink="activegames"><button type="button" class="btn btn-success">Active Games</button></a></li>
+             <li><a  routerLinkActive="active"routerLink="mygame"><button type="button" class="btn btn-warning"> Monitor My Game</button></a></li>
+             <li><a  routerLinkActive="active"routerLink="join"><button type="button" class="btn btn-info"> Join A Game</button></a></li>
+            </ul>
+         </div>
+       </div>
+     </nav>
+    </div>
+
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+</div>
+
+

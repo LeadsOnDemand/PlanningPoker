@@ -1,0 +1,42 @@
+<div class="container-fluid"style="width:60%;">
+                <form>
+                  <div class="panel-body" >
+                  <div class="form-group" >
+                  <div class="panel panel-warning">
+                  <div class="panel-heading">Players In Current Game
+                  </div>
+                  <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-primary"><label>Game Name:</label>{{name}}
+                        </li>
+                        <li class="list-group-item list-group-item-primary">
+                          <label>Current Game Id:</label><input class="form-control input-sm"  [(ngModel)]="playerId" name="playerId" placeholder="Enter Game Name" required>                          
+                        </li>
+                       <li class="list-group-item list-group-item-primary">
+                          <button type="button" class="btn btn-danger"  [(ngModel)]="getP" name="getP" ngDefaultControl (click)="getPlayers($event)" value="delete">Get Players</button>
+                       </li>
+                        <li class="list-group-item list-group-item-warning">                     
+                        
+                        <div class="panel-body" style="padding:0px;" *ngFor="let player of players" >
+                        <div class="container-fluid" style="width:80%;float:left;">
+                        <ul class="list-group">
+                        <li class="list-group-item list-group-item-primary">Name:&nbsp;&nbsp;&nbsp;{{player.name}}
+                        </li>
+                        <li class="list-group-item list-group-item-info">Selected Number:&nbsp;&nbsp;&nbsp;{{player.selectednum}}
+                        </li>
+                        </ul>
+                        </div>
+                        <div class="container-fluid" style="width:10%;float:right;padding-top:3vw;">
+                            <button type="button" class="btn btn-danger" style="float:right;" [(ngModel)]="delete" name="delete" ngDefaultControl (click)="deletePlayer(player._id)" value="delete">Delete</button> 
+                         </div>
+                        </div>
+
+                      </li>
+
+                    </ul>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  </form>
+</div>
